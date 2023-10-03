@@ -1,45 +1,42 @@
-#imports para a parte de UI 
-from tkinter import *
-from tkinter import Tk, ttk
-from tkinter.ttk import *
-from tkinter import messagebox
+import telebot
+from telebot import types
+#from conection import TELEGRAM_BOT_TOKEN
+
+#chave do bot do telegram 
+#Key provisória
 
 
-### -- PARTE RESPONSÁVEL PELA UI -- ###
+key = ""
+bot = telebot.TeleBot(key)
+mensagem_text = "insira a matricula do usuário"
 
+@bot.message_handler(commands=['opcao1'])
+def opcao1(mensagem):
+    markup = types.ForceReply(selective=False)
+    user = types.InputTextMessageContent()
+    bot.send_message(mensagem.chat.id, mensagem_text , entities= user, reply_markup=markup)
+    user = mensagem.text.text
+    print(user)
 
-# - Criação da janela
-janela = Tk()
-janela.title("limpeza de arquivos")
-width = 700
-height = 400
+@bot.message_handler(commands=['opcao2'])
+def opcao2(mensagem):
+    bot.reply_to(mensagem, "Função ainda não criada")
 
-# - Labels e  Botões
+@bot.message_handler(commands=['opcao3'])
+def opcao3(mensagem):
+    bot.reply_to(mensagem, "Função ainda não criada")
 
-# Título #
+def verificar(mensagem):
+    return True
 
-titulo = Label(janela, text='Automção para limpeza de arquivos', anchor='center', foreground='darkblue', background='darkgray', font=('Helvetica', 40), padding='5')
-titulo.pack(fill='both')
+@bot.message_handler(func=verificar)
+def resposta_padrao(mensagem):
+    menu = f"""
+    Olá {mensagem.chat.first_name} {mensagem.chat.last_name}, Seja bem vindo ao bot de auxilio do Tech bar. Favor escolha alguma das opções pra continuar:
+    /opcao1 Verficiar dados referente a um usuário especifico
+    /opcao2 Desbloquear um usuário
+    /opcao3 Bloquear um usuário
+    """
+    bot.reply_to(mensagem, menu)
 
-subtitulo = Label(janela, text='Favor selecionar a extensão do arquivo e o caminho a ser limpo', ancho='center', foreground='darkblue', background='darkgray', font=('Helvetica', 15))
-subtitulo.pack(pady=20)
-
-# Legenda # 
-
-labelpath = Label(text='Informe o caminho a ser limpo', font=('Helvetica', 12), foreground='brown')
-labelpath.pack(anchor='w', padx=30)
-
-labelext = Label(text='Informe (com ponto . ) a extensão a ser deletada', font=('Helvetica', 12), foreground='brown')
-labelext.pack(anchor='w', padx=30)
-
-# Entry box #
-
-path_box = Entry(janela, background='white')
-path_box.pack(anchor='w')
-
-# Botão # 
-
-bt_iniciar = Button(janela, text='Iniciar', padding='8')
-bt_iniciar.pack(side='left', padx=120,  expand=True)
-
-janela.mainloop()
+bot.polling()

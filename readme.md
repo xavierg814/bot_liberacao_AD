@@ -11,7 +11,7 @@ Antes de usar este código, certifique-se de que você tenha:
 - As bibliotecas necessárias instaladas. Você pode instalá-las executando o seguinte comando:
 
   ```bash
-  pip install python-ldap python-telegram-bot
+  pip install python-ldap telebot
 Um bot Telegram criado e o token de acesso do bot. Você pode criar um bot seguindo as instruções aqui.
 Configuração
 Clone este repositório para sua máquina:
